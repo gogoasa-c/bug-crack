@@ -1,14 +1,15 @@
-const postgres = require("postgres");
+const { Sequelize } = require("sequelize");
 
-// replace these w/ your own info
 const username = "postgres";
 const password = "pass123";
 const host = "localhost";
 const port = "5432";
 const database = "postgres";
 
-const sql = postgres(`postgres://${username}:${password}@${host}:${port}/${database}`);
+const sequelize = new Sequelize(database, username, password, {
+    host: host,
+    port: port,
+    dialect: "postgres"
+});
 
-
-
-module.exports = sql;
+module.exports = sequelize;
