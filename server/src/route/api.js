@@ -1,14 +1,11 @@
 const router = require("express").Router();
 
-const {BUG} = require("../constant/constant.js");
-const {parseForm} = require("../middleware/FormParser.js");
+const parseForm = require("../middleware/FormParser.js");
 
-const BugController = {
-    add: require("../controller/BugController.js").add
-};
+const BugController = require("../controller/BugController.js");
 
 
-router.post(BUG, parseForm, BugController.add);
+router.post("/bug", BugController.add);
 
 
 module.exports = router;
