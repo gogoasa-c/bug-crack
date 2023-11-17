@@ -13,8 +13,10 @@ module.exports = {
             status: status
         }).then(bug => {
             response.status(STATUS_CREATED).json(bug).send();
+            return bug;
         }).catch(error => {
             response.status(STATUS_INTERNAL_SERVER_ERROR).json(error).send();
+            console.error(`Error whilst processing request: ${error}`);
         });
     }
 };
