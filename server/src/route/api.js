@@ -1,4 +1,6 @@
 const {BUG} = require("../constant/constant.js");
+const {parseForm} = require("../middleware/FormParser.js");
+
 const router = require("express").Router();
 
 const BugController = {
@@ -6,7 +8,7 @@ const BugController = {
 };
 
 
-router.post(BUG, BugController.add);
+router.post(BUG, parseForm, BugController.add);
 
 
 module.exports = router;
