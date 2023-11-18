@@ -5,7 +5,7 @@ const {STATUS_CREATED} = require("../../src/constant/constant.js");
 const addBug = require("../../src/service/BugService.js").addBug;
 
 describe("Testing Bug Service:", () => {
-    test("Testing correct request: ", async () => {
+    test("Add Bug - Testing correct request: ", async () => {
         let request = {
             body: {
                 "severity": "Low",
@@ -43,7 +43,7 @@ describe("Testing Bug Service:", () => {
         expect(returnedBug.userId).toEqual(request.body.userId);
         expect(returnedBug.status).toEqual(request.body.status);
     })
-    test("Testing incorrect request: ", async () => {
+    test("Add Bug - Testing incorrect request: ", async () => {
         let request = {
             body: {
                 "severity": "Invalid",
