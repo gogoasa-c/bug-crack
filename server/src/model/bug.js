@@ -34,7 +34,10 @@ const Bug = sequelize.define("bug", {
     },
     status: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
+        validate: {
+            isIn: [["New", "In Progress", "Fixed", "Closed"]]
+        }
     }
 });
 

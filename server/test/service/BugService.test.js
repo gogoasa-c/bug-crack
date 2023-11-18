@@ -5,23 +5,7 @@ const {STATUS_CREATED} = require("../../src/constant/constant.js");
 const addBug = require("../../src/service/BugService.js").addBug;
 
 describe("Testing Bug Service:", () => {
-    test("Testing correct request: ", () => {
-        Bug.create = jest.fn((obj) => {
-            return JSON.parse("{\n" +
-                "    \"id\": 9,\n" +
-                "    \"severity\": \"Low\",\n" +
-                "    \"description\": \"This is a bug, alright\",\n" +
-                "    \"commitLink\": \"https://www.google.com\",\n" +
-                "    \"projectId\": 23,\n" +
-                "    \"userId\": 15,\n" +
-                "    \"status\": \"New\",\n" +
-                "    \"updatedAt\": \"2023-11-17T13:55:08.976Z\",\n" +
-                "    \"createdAt\": \"2023-11-17T13:55:08.976Z\"\n" +
-                "}");
-        });
-        Bug.create.then = jest.fn(() => {});
-        Bug.create.then.catch = jest.fn(() => {});
-
+    test("Testing correct request: ", async () => {
         let request = {
             body: {
                 "severity": "Low",
@@ -35,8 +19,49 @@ describe("Testing Bug Service:", () => {
         let response = {
             status: {}
         };
-        addBug(request, response);
 
-        expect(response.status).toBe(STATUS_CREATED);
+        Bug.create = jest.fn().mockResolvedValue(JSON.parse("{\n" +
+            "    \"id\": 9,\n" +
+            "    \"severity\": \"Low\",\n" +
+            "    \"description\": \"This is a bug, alright\",\n" +
+            "    \"commitLink\": \"https://www.google.com\",\n" +
+            "    \"projectId\": 23,\n" +
+            "    \"userId\": 15,\n" +
+            "    \"status\": \"New\",\n" +
+            "    \"updatedAt\": \"2023-11-17T13:55:08.976Z\",\n" +
+            "    \"createdAt\": \"2023-11-17T13:55:08.976Z\"\n" +
+            "}"));
+
+
+        const returnedBug = await addBug(request, response);
+
+        expect(returnedBug).not.toBeNull();
+        expect(returnedBug.severity).toEqual(request.body.severity);
+        expect(returnedBug.description).toEqual(request.body.description);
+        expect(returnedBug.commitLink).toEqual(request.body.commitLink);
+        expect(returnedBug.projectId).toEqual(request.body.projectId);
+        expect(returnedBug.userId).toEqual(request.body.userId);
+        expect(returnedBug.status).toEqual(request.body.status);
+    })
+    test("Testing incorrect request: ", async () => {
+        let request = {
+            body: {
+                "severity": "Invalid",
+                "description": "This is a bug, alright",
+                "commitLink": "https://www.google.com",
+                "projectId": 23,
+                "userId": 15,
+                "status": "New"
+            }
+        };
+        let response = {
+            status: {}
+        };
+
+        Bug.create = jest.fn().mockRejectedValue("Error");
+
+        const returnedBug = await addBug(request, response);
+
+        expect(returnedBug).toBeNull();
     })
 })
