@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import "./NavBar.css";
-import {Breadcrumb, Button, Flex, Layout, Menu, Modal, theme} from 'antd';
+import {Image, Button, Flex, Layout, Menu, Modal, Tabs} from 'antd';
 
 const menuItems = [
     {
@@ -15,7 +15,10 @@ const menuItems = [
         label: "Bugs",
         key: "bugs"
     }
-]
+].map(item => ({
+    ...item,
+    className: "navbar-element"
+}));
 
 const NavBar = () => {
     const {Header, Content, Footer} = Layout;
@@ -44,16 +47,15 @@ const NavBar = () => {
     }
 
     return (
-        <Header
-            className={"navbar"}
-        >
+        <Header className={"navbar"} >
             <div >
                 <Flex wrap="wrap" gap="small" className={"navbar-div"}>
+                    <Image width={40} src="/photo/bug_crack_logo.png" onClick={() => {}}/>
                     <Menu
-                        className={"navbar"}
+                        className={"navbar-element"}
                         mode="horizontal"
                         items={menuItems}
-                        selectedKeys={current}
+                        selectedKeys={[current]}
                         onClick={menuItemOnClick}
                     />
 

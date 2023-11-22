@@ -6,6 +6,10 @@
     float: right;
 }
 
+.navbar-element:hover {
+    color: #8ecae6 !important;
+}
+
 .navbar-div .navbar-button:hover {
     background-color: #254482 !important;
     color: aliceblue !important;
@@ -15,7 +19,8 @@
     background: #203464;
 }
 
-.navbar {
+.navbar,
+.navbar-element {
     background: #10243c;
     color: aliceblue;
     font-size: 16px;
