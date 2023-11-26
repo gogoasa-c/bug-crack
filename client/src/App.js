@@ -1,16 +1,12 @@
-import logo from './logo.svg';
 import './App.css';
-import {Layout} from "antd";
-import NavBar from "./components/Layout/Header/NavBar";
+import PageContainer from "./components/Layout/PageContainer";
 
 function App() {
-  return (
-    <div className="App">
-      <Layout className="layout">
-        <NavBar/>
-      </Layout>
-    </div>
-  );
+    return (
+        <div className="App">
+            <PageContainer />
+        </div>
+    );
 }
 
 export default App;

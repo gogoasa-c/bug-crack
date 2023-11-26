@@ -20,7 +20,7 @@ const menuItems = [
     className: "navbar-element"
 }));
 
-const NavBar = () => {
+const NavBar = ({onTabChanged}) => {
     const {Header, Content, Footer} = Layout;
 
     const [isLoginModalOn, setIsLoginModalOn] = useState(false);
@@ -39,18 +39,20 @@ const NavBar = () => {
 
     const loginHandler = () => {
         setIsLoginModalOn(true);
+        setButtonText("Log out")
         setOpen(true);
     }
 
     const menuItemOnClick = (e) => {
         setCurrent(e.key);
+        onTabChanged(e.key);
     }
 
     return (
         <Header className={"navbar"} >
             <div >
                 <Flex wrap="wrap" gap="small" className={"navbar-div"}>
-                    <Image width={40} src="/photo/bug_crack_logo.png" onClick={() => {}}/>
+                    <img width={40} src="/photo/bug_crack_logo.png" onClick={() => {}}/>
                     <Menu
                         className={"navbar-element"}
                         mode="horizontal"
@@ -58,7 +60,6 @@ const NavBar = () => {
                         selectedKeys={[current]}
                         onClick={menuItemOnClick}
                     />
-
                     <Button
                         key={0}
                         type="text"

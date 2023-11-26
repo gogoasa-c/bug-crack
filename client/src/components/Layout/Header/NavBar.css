@@ -11,7 +11,7 @@
 }
 
 .navbar-div .navbar-button:hover {
-    background-color: #254482 !important;
+    background-color: #4c9ff3 !important;
     color: aliceblue !important;
 }
 
@@ -32,3 +32,6 @@
     justify-content: space-between;
 }
 
+.ant-menu-item-selected .ant-menu-title-content {
+    color: #4c9ff3;
+}
