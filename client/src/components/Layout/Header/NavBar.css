@@ -1,13 +1,13 @@
 .navbar-button {
     display: flex;
-    color: aliceblue;
+    color: #b3b3b3;
     background: #203464;
     font-size: 16px;
     float: right;
 }
 
 .navbar-element:hover {
-    color: #8ecae6 !important;
+    color: aliceblue !important;
 }
 
 .navbar-div .navbar-button:hover {

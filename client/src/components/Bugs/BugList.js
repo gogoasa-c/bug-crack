@@ -49,7 +49,7 @@ const bugArray1 = [
     {
         project: "Bug Crack",
         description: "We have no bugs, but this is a placeholder.",
-        severity: <Dot colour="#f3a"/>,
+        severity: "Low",
         status: "New",
         assignedTo: "Cristian Gogoasa"
     },
@@ -230,24 +230,6 @@ const BugList = ({bugs, columnHeaders}) => {
     columnHeaders = headers;
 
     return (
-        // <React.Fragment>
-        //         <Row gutter={[64, 64]} className={"column-header"}>
-        //             {columnHeaders.map((h) => (getHeaders(h)))}
-        //         </Row>
-        //         {bugArray.map(bug => (
-        //             <>
-        //                 <Divider/>
-        //                 <Row gutter={[64, 64]}>
-        //                     <Col span={4}>{bug.project}</Col>
-        //                     <Col span={8}>{bug.description}</Col>
-        //                     <Col span={4}>{bug.severity}</Col>
-        //                     <Col span={4}>{bug.status}</Col>
-        //                     <Col span={4}>{bug.assignedTo}</Col>
-        //                 </Row>
-        //
-        //             </>
-        //         ))}
-        // </React.Fragment>
         <Table
             columns={columnHeaders.map(col => getColumns(col))}
             dataSource={bugs}

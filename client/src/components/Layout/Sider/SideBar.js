@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {Layout, Menu} from 'antd';
 import constant from '../../../Constant';
+import "./SideBar.css";
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -25,7 +26,14 @@ const projectList = [
         key: 4,
         label: "Serevu"
     }
-];
+].map(item => ({
+    ...item,
+    onClick: () => {
+        filteredProjectList = projectList.filter(project => project.key !== item.key);
+    }
+}));
+
+let filteredProjectList = projectList;
 
 const SideBar = ({selectedTab}) => {
     const [collapsed, setCollapsed] = useState(false);
@@ -35,8 +43,8 @@ const SideBar = ({selectedTab}) => {
     }
 
     return (
-        <Sider collapsible collapsed={collapsed} onCollapse={coll => setCollapsed(coll)} >
-            <Menu theme="dark" defaultSelectedKeys={['-1']} mode="inline" items={projectList} />
+        <Sider collapsed={collapsed} onCollapse={coll => setCollapsed(coll)} >
+            <Menu theme="dark" defaultSelectedKeys={['-1']} mode="inline" items={filteredProjectList} />
         </Sider>
     );
 }

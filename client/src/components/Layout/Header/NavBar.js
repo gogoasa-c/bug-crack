@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import "./NavBar.css";
-import {Image, Button, Flex, Layout, Menu, Modal, Tabs} from 'antd';
+import {Button, Flex, Layout, Menu} from 'antd';
 
 const menuItems = [
     {
