@@ -22,4 +22,14 @@ module.exports = {
 
         res.status(STATUS_INTERNAL_SERVER_ERROR).send();
     },
+
+    getAllBugsForProject: async (req, res, next) => {
+        let bugs = await BugService.getAllBugsForProject(req);
+        if (bugs !== null) {
+            res.status(STATUS_CREATED).json(bugs).send();
+            return;
+        }
+
+        res.status(STATUS_INTERNAL_SERVER_ERROR).send();
+    }
 }
