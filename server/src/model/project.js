@@ -13,6 +13,10 @@ const Project = sequelize.define('project', {
         type: Sequelize.TEXT,
         allowNull: false
     },
+    repositoryLink: {
+        type: Sequelize.TEXT,
+        allowNull: false
+    },
     description: {
         type: Sequelize.TEXT,
         allowNull: false

@@ -5,15 +5,17 @@ module.exports = {
         let returnedProject = null;
         const body = request.body;
 
-        if (body.name === undefined || body.description === undefined || body.teamId === undefined) {
+        if (body.name === undefined || body.repositoryLink === undefined || body.description === undefined
+            || body.teamId === undefined) {
             console.error(`[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`);
             return returnedProject;
         }
 
-        const {name, description, teamId} = body;
+        const {name, repositoryLink, description, teamId} = body;
 
         await Project.create({
             name: name,
+            repositoryLink: repositoryLink,
             description: description,
             teamId: teamId
         }).then(project => {
