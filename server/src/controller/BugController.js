@@ -4,12 +4,22 @@ const BugService = require("../service/BugService.js");
 
 module.exports = {
     add: async (req, res, next) => {
-        let bug = await BugService.addBug(req, res);
+        let bug = await BugService.addBug(req);
         if (bug !== null) {
             res.status(STATUS_CREATED).json(bug).send();
             return;
         }
 
         res.status(STATUS_INTERNAL_SERVER_ERROR).send();
-    }
+    },
+
+    get: async (req, res, next) => {
+        let bug = await BugService.getBug(req);
+        if (bug !== null) {
+            res.status(STATUS_CREATED).json(bug).send();
+            return;
+        }
+
+        res.status(STATUS_INTERNAL_SERVER_ERROR).send();
+    },
 }
