@@ -1,6 +1,8 @@
 import React, {useState} from 'react';
 import "./BugList.css";
 import {Layout, Space, Row, Col, Divider, Table} from "antd";
+import {CheckCircleFilled} from "@ant-design/icons";
+import Dot from "../Common/Dot";
 
 const {Header, Footer, Sider, Content} = Layout
 
@@ -47,7 +49,7 @@ const bugArray1 = [
     {
         project: "Bug Crack",
         description: "We have no bugs, but this is a placeholder.",
-        severity: "Low",
+        severity: <Dot colour="#f3a"/>,
         status: "New",
         assignedTo: "Cristian Gogoasa"
     },

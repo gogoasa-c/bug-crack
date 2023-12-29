@@ -11,6 +11,5 @@ module.exports = {
         }
 
         res.status(STATUS_INTERNAL_SERVER_ERROR).send();
-        // ceva
     }
 }

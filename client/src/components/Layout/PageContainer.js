@@ -1,4 +1,4 @@
-import {Layout} from "antd";
+import {Layout, Spin} from "antd";
 import {useState} from "react";
 import NavBar from "./Header/NavBar";
 import PageContent from "./Content/PageContent";
