@@ -1,9 +1,6 @@
 const {describe, expect, test} = require("@jest/globals");
 const Bug = require("../../src/model/bug.js");
-const {STATUS_CREATED} = require("../../src/constant/constant.js");
-const {getBug, getAllBugsForProject} = require("../../src/service/BugService");
-
-const addBug = require("../../src/service/BugService.js").addBug;
+const {addBug, getBug, getAllBugsForProject} = require("../../src/service/BugService");
 
 describe("Testing Bug Service:", () => {
     test("Add Bug - Testing correct request: ", async () => {

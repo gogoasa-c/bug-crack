@@ -23,7 +23,7 @@ module.exports = {
         res.status(STATUS_INTERNAL_SERVER_ERROR).send();
     },
 
-    getAllBugsForProject: async (req, res) => {
+    getAll: async (req, res) => {
         let bugs = await BugService.getAllBugsForProject(req);
         if (bugs !== null) {
             res.status(STATUS_OK).json(bugs).send();

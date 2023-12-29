@@ -1,5 +1,4 @@
 const Bug = require("../model/bug");
-const {STATUS_CREATED, STATUS_INTERNAL_SERVER_ERROR} = require("../constant/constant");
 
 module.exports = {
     addBug: async (request) => {
