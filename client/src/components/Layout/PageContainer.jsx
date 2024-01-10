@@ -1,4 +1,4 @@
-import {Layout, Spin} from "antd";
+import {Layout} from "antd";
 import {useState} from "react";
 import NavBar from "./Header/NavBar";
 import PageContent from "./Content/PageContent";
@@ -12,8 +12,8 @@ const PageContainer = () => {
 
     return (
             <Layout>
-                <NavBar onTabChanged={handleTabClick}/>
-                <PageContent tabSelection={selectedTab}/>
+                <NavBar onTabChanged={handleTabClick} />
+                <PageContent tabSelection={selectedTab} />
             </Layout>
     );
 }
