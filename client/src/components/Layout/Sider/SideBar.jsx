@@ -47,6 +47,7 @@ const SideBar = ({selectedTab}) => {
 
     return (
         <Sider collapsed={collapsed} onCollapse={coll => setCollapsed(coll)} >
+            <Header style={{color: "aliceblue", fontSize: "16px"}}>Projects: </Header>
             <Menu theme="dark" selectedKeys={[selectedProject.key]} mode="inline" items={filteredProjectList} onSelect={onSelect} />
         </Sider>
     );
