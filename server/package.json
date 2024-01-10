@@ -6,8 +6,8 @@
   "type": "commonjs",
   "scripts": {
     "test": "jest",
-    "start": "node src/controller/BugController.js",
-    "dev": "nodemon src/app.js"
+    "dev": "nodemon src/app.js",
+    "start": "node src/app.js"
   },
   "keywords": [],
   "author": "gogoasa-c & brescar",

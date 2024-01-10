@@ -2,7 +2,7 @@ const Bug = require("../model/bug");
 const {STATUS_CREATED, STATUS_INTERNAL_SERVER_ERROR} = require("../constant/constant");
 
 module.exports = {
-    addBug: async (request, response) => {
+    addBug: async (request) => {
         let returnedBug = null;
         const body = request.body;
 
@@ -40,5 +40,45 @@ module.exports = {
         });
 
         return returnedBug;
+    },
+
+    getBug: async (request) => {
+        let returnedBug = null;
+        const params = request.params;
+
+        if (params.id === undefined) {
+            console.error(`[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`);
+            return returnedBug;
+        }
+
+        await Bug.findByPk(params.id).then(bug => {
+            returnedBug = bug;
+        }).catch(error => {
+            console.error(`[${new Date().toISOString()}]: Error whilst processing request: ${error}`);
+        });
+
+        return returnedBug;
+    },
+
+    getAllBugsForProject: async (request) => {
+        let returnedBugs = null;
+        const params = request.params;
+
+        if (params.id === undefined) {
+            console.error(`[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`);
+            return returnedBugs;
+        }
+
+        await Bug.findAll({
+            where: {
+                projectId: params.id
+            }
+        }).then(bugs => {
+            returnedBugs = bugs;
+        }).catch(error => {
+            console.error(`[${new Date().toISOString()}]: Error whilst processing request: ${error}`);
+        });
+
+        return returnedBugs;
     }
 };

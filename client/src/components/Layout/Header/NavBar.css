@@ -1,0 +1,37 @@
+.navbar-button {
+    display: flex;
+    color: #b3b3b3;
+    background: #203464;
+    font-size: 16px;
+    float: right;
+}
+
+.navbar-element:hover {
+    color: aliceblue !important;
+}
+
+.navbar-div .navbar-button:hover {
+    background-color: #4c9ff3 !important;
+    color: aliceblue !important;
+}
+
+.navbar-text {
+    background: #203464;
+}
+
+.navbar,
+.navbar-element {
+    background: #10243c;
+    color: aliceblue;
+    font-size: 16px;
+}
+
+.navbar-div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.ant-menu-item-selected .ant-menu-title-content {
+    color: #4c9ff3;
+}
