@@ -2,6 +2,7 @@ import {Content} from "antd/es/layout/layout";
 import BugList from "../../Bugs/BugList";
 
 const MainPanel = ({tabSelection}) => {
+
     const getPage = (tabName) => {
         switch (tabName) {
             case 'projects':

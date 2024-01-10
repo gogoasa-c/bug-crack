@@ -3,6 +3,8 @@ import "./BugList.css";
 import {Layout, Space, Row, Col, Divider, Table} from "antd";
 import {CheckCircleFilled} from "@ant-design/icons";
 import Dot from "../Common/Dot";
+import { observer } from 'mobx-react';
+import { bugStore } from '../../stores/BugStore';
 
 const {Header, Footer, Sider, Content} = Layout
 
@@ -225,20 +227,17 @@ const getColumns = (column) => {
     }
 }
 
-const BugList = ({bugs, columnHeaders}) => {
-    bugs = bugArray1;
-    columnHeaders = headers;
-
+const BugList = observer(() => {
     return (
         <Table
-            columns={columnHeaders.map(col => getColumns(col))}
-            dataSource={bugs}
+            columns={headers.map(col => getColumns(col))}
+            dataSource={bugStore.filteredBugList}
             pagination={{
                 pageSize: 10,
             }}
 
         />
     );
-}
+});
 
 export default BugList;

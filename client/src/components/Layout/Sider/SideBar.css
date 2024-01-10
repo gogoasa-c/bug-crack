@@ -2,3 +2,7 @@
   background-color: #10243c;
   color: aliceblue;
 }
+
+.ant-layout-sider {
+  min-height: 91vh;
+}
