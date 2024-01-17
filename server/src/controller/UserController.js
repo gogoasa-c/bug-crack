@@ -15,4 +15,12 @@ module.exports = {
 
         res.status(STATUS_INTERNAL_SERVER_ERROR).send();
     },
+
+    login: async (req, res, next) => {
+        let permission = await UserService.loginUser(req, res);
+        if (permission) {
+            res.status(STATUS_OK).send();
+        }
+        res.status(STATUS_INTERNAL_SERVER_ERROR).send();
+    },
 };

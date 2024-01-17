@@ -8,6 +8,7 @@ router.get("/bug/:id", BugController.get);
 router.get("/bug/project/:id", BugController.getAllBugsForProject);
 
 router.post("/user", UserController.add);
+router.post("/user/login", UserController.login);
 
 router.post("/team", TeamController.add);
 router.get("/team/:id", TeamController.get);
