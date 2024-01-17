@@ -30,4 +30,28 @@ module.exports = {
                 );
             });
     },
+
+    getTeam: async (req, res) => {
+        let returnedTeam = null;
+        const params = req.params;
+
+        if (params.id === undefined) {
+            console.error(
+                `[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`
+            );
+            return returnedTeam;
+        }
+
+        await Team.findByPk(params.id)
+            .then((team) => {
+                returnedTeam = team;
+            })
+            .catch((error) => {
+                console.error(
+                    `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
+                );
+            });
+
+        return returnedTeam;
+    },
 };

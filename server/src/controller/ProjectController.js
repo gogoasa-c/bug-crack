@@ -15,4 +15,14 @@ module.exports = {
 
         res.status(STATUS_INTERNAL_SERVER_ERROR).send();
     },
+
+    get: async (req, res) => {
+        let project = await ProjectService.getProject(req, res);
+        if (project !== null) {
+            res.status(STATUS_OK).json(project).send();
+            return;
+        }
+
+        res.status(STATUS_INTERNAL_SERVER_ERROR).send();
+    },
 };

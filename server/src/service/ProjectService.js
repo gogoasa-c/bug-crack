@@ -31,4 +31,28 @@ module.exports = {
                 );
             });
     },
+
+    getProject: async (req, res) => {
+        let returnedProject = null;
+        const params = req.params;
+
+        if (params.id === undefined) {
+            console.error(
+                `[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`
+            );
+            return returnedProject;
+        }
+
+        await Project.findByPk(params.id)
+            .then((project) => {
+                returnedProject = project;
+            })
+            .catch((error) => {
+                console.error(
+                    `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
+                );
+            });
+
+        return returnedProject;
+    },
 };

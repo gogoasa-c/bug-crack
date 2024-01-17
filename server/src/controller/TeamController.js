@@ -15,4 +15,14 @@ module.exports = {
 
         res.status(STATUS_INTERNAL_SERVER_ERROR).send();
     },
+
+    get: async (req, res) => {
+        let team = await TeamService.getTeam(req, res);
+        if (team !== null) {
+            res.status(STATUS_OK).json(team).send();
+            return;
+        }
+
+        res.status(STATUS_INTERNAL_SERVER_ERROR).send();
+    },
 };

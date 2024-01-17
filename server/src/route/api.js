@@ -10,7 +10,9 @@ router.get("/bug/project/:id", BugController.getAllBugsForProject);
 router.post("/user", UserController.add);
 
 router.post("/team", TeamController.add);
+router.get("/team/:id", TeamController.get);
 
 router.post("/project", ProjectController.add);
+router.get("/project/:id", ProjectController.get);
 
 module.exports = router;
