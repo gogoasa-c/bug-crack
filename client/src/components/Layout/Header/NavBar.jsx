@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import "./NavBar.css";
-import { Button, Flex, Layout, Menu, Modal, Form, Input } from "antd";
+import {Button, Flex, Layout, Menu, Modal, Form, Input, Image} from "antd";
 import { userStore } from "../../../stores/UserStore";
 import { set } from "mobx";
 import LandingPage from "../Content/LandingPage";
+import {LoginModal} from "./Login/LoginModal";
 
 const menuItems = [
     {
@@ -47,7 +48,6 @@ const NavBar = ({ onTabChanged }) => {
                 setButtonText("Log out");
                 setOpen(false);
                 setIsLoginModalOn(false);
-                return;
             }
         });
         setTitle("Invalid e-mail or password, please try again: ");
@@ -84,10 +84,12 @@ const NavBar = ({ onTabChanged }) => {
         <Header className={"navbar"}>
             <div>
                 <Flex wrap="wrap" gap="small" className={"navbar-div"}>
-                    <img
+                    <Image
                         width={40}
+                        alt={"bug_crack_logo"}
                         src="/photo/bug_crack_logo.png"
-                        onClick={() => {}}
+                        onClick={() => {
+                        }}
                     />
                     <Menu
                         className={"navbar-element"}
@@ -108,41 +110,19 @@ const NavBar = ({ onTabChanged }) => {
                     </Button>
                 </Flex>
             </div>
-            <div style={{ visibility: userId === -1 ? "visible" : "hidden" }}>
-                <LandingPage />
+            <div style={{visibility: userId === -1 ? "visible" : "hidden"}}>
+                <LandingPage/>
             </div>
-            <Modal
-                title={modalTitle}
-                open={open}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <Form>
-                    <Form.Item label="Email">
-                        <Input
-                            type="email"
-                            value={loginFormData.email}
-                            onChange={(e) =>
-                                setLoginFormData({
-                                    ...loginFormData,
-                                    email: e.target.value,
-                                })
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item label="Password">
-                        <Input.Password
-                            value={loginFormData.password}
-                            onChange={(e) =>
-                                setLoginFormData({
-                                    ...loginFormData,
-                                    password: e.target.value,
-                                })
-                            }
-                        />
-                    </Form.Item>
-                </Form>
-            </Modal>
+            <LoginModal title={modalTitle} open={open} onOk={handleOk} onCancel={handleCancel}
+                        loginFormData={loginFormData} onChange={(e) =>
+                setLoginFormData({
+                    ...loginFormData,
+                    email: e.target.value,
+                })} onChange1={(e) =>
+                setLoginFormData({
+                    ...loginFormData,
+                    password: e.target.value,
+                })}/>
         </Header>
     );
 };
