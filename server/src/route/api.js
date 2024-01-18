@@ -1,7 +1,13 @@
 const router = require("express").Router();
+const cors = require("cors");
+
+// Enable CORS for all routes
+router.use(cors());
 
 const BugController = require("../controller/BugController.js");
 const UserController = require("../controller/UserController.js");
+const TeamController = require("../controller/TeamController.js");
+const ProjectController = require("../controller/ProjectController.js");
 
 router.post("/bug", BugController.add);
 router.get("/bug/:id", BugController.get);

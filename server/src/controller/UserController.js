@@ -2,6 +2,8 @@ const service = require("../service/UserService.js");
 const {
     STATUS_CREATED,
     STATUS_INTERNAL_SERVER_ERROR,
+    STATUS_OK,
+    STATUS_BAD_REQUEST,
 } = require("../constant/constant");
 const UserService = require("../service/UserService.js");
 
@@ -9,7 +11,7 @@ module.exports = {
     add: async (req, res, next) => {
         let user = await UserService.addUser(req, res);
         if (user !== null) {
-            res.status(STATUS_CREATED).json(user).send();
+            res.status(STATUS_CREATED).json(user);
             return;
         }
 
@@ -17,10 +19,10 @@ module.exports = {
     },
 
     login: async (req, res, next) => {
-        let permission = await UserService.loginUser(req, res);
-        if (permission) {
-            res.status(STATUS_OK).send();
+        let id = await UserService.login(req, res);
+        if (id) {
+            res.status(STATUS_OK).json({ id });
         }
-        res.status(STATUS_INTERNAL_SERVER_ERROR).send();
+        res.status(STATUS_BAD_REQUEST).send();
     },
 };

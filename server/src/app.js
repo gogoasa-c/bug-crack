@@ -6,6 +6,8 @@ const router = require("./route/api.js");
 const sequelize = require("./db/db.js");
 const Bug = require("./model/bug.js");
 const User = require("./model/user.js");
+const Project = require("./model/project");
+const Team = require("./model/team");
 const bodyParser = require("body-parser");
 
 app.use(bodyParser.json());

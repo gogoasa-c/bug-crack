@@ -14,3 +14,5 @@ const Team = sequelize.define("team", {
         allowNull: false,
     },
 });
+
+module.exports = Team;

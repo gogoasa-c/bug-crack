@@ -18,3 +18,5 @@ const Project = sequelize.define("project", {
         allowNull: false,
     },
 });
+
+module.exports = Project;
