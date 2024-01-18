@@ -36,7 +36,7 @@ module.exports = {
     getBugsForUser: async (req, res) => {
         let bugs = await BugService.getBugsForUser(req);
         if (bugs !== null) {
-            res.status(STATUS_OK).json(bugs).send();
+            res.status(STATUS_OK).json(bugs);
             return;
         }
 

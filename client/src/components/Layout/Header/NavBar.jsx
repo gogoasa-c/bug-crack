@@ -2,6 +2,7 @@ import axios from "axios";
 import React, { useState } from "react";
 import "./NavBar.css";
 import {Button, Flex, Layout, Menu, Modal, Form, Input, Image} from "antd";
+import {bugStore} from "../../../stores/BugStore";
 import LandingPage from "../Content/LandingPage";
 import {LoginModal} from "./Login/LoginModal";
 import Constant from "../../../Constant";
@@ -44,7 +45,9 @@ const NavBar = ({ onTabChanged }) => {
             password: loginFormData.password,
         });
 
-        if (!response.data["id"]) {
+        const userId = response.data["id"];
+
+        if (!userId) {
             setTitle("Invalid e-mail or password, please try again: ");
             return;
         }
@@ -53,7 +56,7 @@ const NavBar = ({ onTabChanged }) => {
         setButtonText("Log out");
         setOpen(false);
         setIsLoginModalOn(false);
-
+        await bugStore.getBugs(userId);
     };
 
     const handleCancel = () => {

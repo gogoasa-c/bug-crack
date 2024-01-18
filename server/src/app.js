@@ -16,24 +16,24 @@ app.use(router);
 // Define relationships
 User.belongsToMany(Project, {
     through: "User_Projects",
-    foreignKey: "User_ID",
+    foreignKey: "userId",
 });
 Project.belongsToMany(User, {
     through: "User_Projects",
-    foreignKey: "Project_ID",
+    foreignKey: "projectId",
 });
 
-Team.belongsToMany(User, { through: "Team_Users", foreignKey: "Team_ID" });
-User.belongsToMany(Team, { through: "Team_Users", foreignKey: "User_ID" });
+Team.belongsToMany(User, { through: "Team_Users", foreignKey: "teamId" });
+User.belongsToMany(Team, { through: "Team_Users", foreignKey: "userId" });
 
-Bug.belongsTo(User, { foreignKey: "User_ID" });
-User.hasMany(Bug, { foreignKey: "User_ID" });
+Bug.belongsTo(User, { foreignKey: "userId" });
+User.hasMany(Bug, { foreignKey: "userId" });
 
-Bug.belongsTo(Project, { foreignKey: "Project_ID" });
-Project.hasMany(Bug, { foreignKey: "Project_ID" });
+Bug.belongsTo(Project, { foreignKey: "projectId" });
+Project.hasMany(Bug, { foreignKey: "projectId" });
 
-Project.belongsTo(Team, { foreignKey: "Team_ID" });
-Team.hasMany(Project, { foreignKey: "Team_ID" });
+Project.belongsTo(Team, { foreignKey: "teamId" });
+Team.hasMany(Project, { foreignKey: "teamId" });
 
 sequelize
     .sync()

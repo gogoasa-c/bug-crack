@@ -1,7 +1,9 @@
-import { action, makeObservable, observable } from "mobx";
+import axios from "axios";
+import {action, makeObservable, observable} from "mobx";
+import Constant from "../Constant";
 
 class BugStore {
-    bugList = [
+    /*bugList = [
         {
             id: 0,
             project: "Bug Crack",
@@ -170,7 +172,9 @@ class BugStore {
             status: "Closed",
             assignedTo: "Andrei Cheorche",
         },
-    ];
+    ];*/
+
+    bugList = [];
 
     filteredBugList = this.bugList;
 
@@ -207,6 +211,20 @@ class BugStore {
 
     updateSelectedBugForEdit = (bug) => {
         this.selectedBugForEdit = bug;
+    };
+
+    getBugs = async (userId) => {
+        axios
+            .get(Constant.LOCALHOST + `/bug/user/${userId}`)
+            .then((response) => {
+                this.bugList = response.data;
+                this.filteredBugList = this.bugList;
+            })
+            .catch((error) => {
+                console.error(
+                    `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
+                );
+            });
     };
 }
 
