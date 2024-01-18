@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import "./NavBar.css";
 import {Button, Flex, Layout, Menu, Modal, Form, Input, Image} from "antd";
@@ -5,6 +6,7 @@ import { userStore } from "../../../stores/UserStore";
 import { set } from "mobx";
 import LandingPage from "../Content/LandingPage";
 import {LoginModal} from "./Login/LoginModal";
+import Constant from "../../../Constant";
 
 const menuItems = [
     {
@@ -38,19 +40,22 @@ const NavBar = ({ onTabChanged }) => {
     const [buttonText, setButtonText] = useState("Log in");
     const [current, setCurrent] = useState("projects");
 
-    const handleOk = () => {
-        userStore.userList.forEach((user) => {
-            if (
-                user.email === loginFormData.email &&
-                user.password === loginFormData.password
-            ) {
-                setUserId(user.id);
-                setButtonText("Log out");
-                setOpen(false);
-                setIsLoginModalOn(false);
-            }
+    const handleOk = async () => {
+        const response = await axios.post(Constant.LOCALHOST + "/user/login", {
+            email: loginFormData.email,
+            password: loginFormData.password,
         });
-        setTitle("Invalid e-mail or password, please try again: ");
+
+        if (!response.data["id"]) {
+            setTitle("Invalid e-mail or password, please try again: ");
+            return;
+        }
+
+        setUserId(response.data["id"]);
+        setButtonText("Log out");
+        setOpen(false);
+        setIsLoginModalOn(false);
+
     };
 
     const handleCancel = () => {
