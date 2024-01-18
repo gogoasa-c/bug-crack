@@ -108,9 +108,13 @@ const NavBar = ({ onTabChanged }) => {
                     </Button>
                 </Flex>
             </div>
-            <div style={{ visibility: userId === -1 ? "visible" : "hidden" }}>
-                <LandingPage />
-            </div>
+            {
+                <div
+                    style={{ visibility: userId === -1 ? "visible" : "hidden" }}
+                >
+                    <LandingPage />
+                </div>
+            }
             <Modal
                 title={modalTitle}
                 open={open}
