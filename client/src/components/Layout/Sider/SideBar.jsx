@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Layout, Menu } from "antd";
+import {Button, Layout, Menu} from "antd";
 import constant from "../../../Constant";
 import "./SideBar.css";
 import { observer } from "mobx-react";
@@ -45,6 +45,13 @@ const SideBar = observer(({ selectedTab }) => {
                     <Menu.Item key={item.key}>{item.label}</Menu.Item>
                 ))}
             </Menu>
+            <Button
+                type="primary"
+                style={{ margin: "10px", background: "#203464" }}
+                onClick={() => {}}
+            >
+                Add bug
+            </Button>
         </Sider>
     );
 });

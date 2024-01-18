@@ -2,8 +2,6 @@ import axios from "axios";
 import React, { useState } from "react";
 import "./NavBar.css";
 import {Button, Flex, Layout, Menu, Modal, Form, Input, Image} from "antd";
-import { userStore } from "../../../stores/UserStore";
-import { set } from "mobx";
 import LandingPage from "../Content/LandingPage";
 import {LoginModal} from "./Login/LoginModal";
 import Constant from "../../../Constant";

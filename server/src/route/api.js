@@ -12,6 +12,7 @@ const ProjectController = require("../controller/ProjectController.js");
 router.post("/bug", BugController.add);
 router.get("/bug/:id", BugController.get);
 router.get("/bug/project/:id", BugController.getAllBugsForProject);
+router.get("/bug/user/:id", BugController.getBugsForUser);
 
 router.post("/user", UserController.add);
 router.post("/user/login", UserController.login);

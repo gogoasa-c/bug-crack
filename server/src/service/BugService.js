@@ -80,5 +80,27 @@ module.exports = {
         });
 
         return returnedBugs;
+    },
+
+    getBugsForUser: async (request) => {
+        let returnedBugs = null;
+        const params = request.params;
+
+        if (params.id === undefined) {
+            console.error(`[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`);
+            return returnedBugs;
+        }
+
+        await Bug.findAll({
+            where: {
+                userId: params.id
+            }
+        }).then(bugs => {
+            returnedBugs = bugs;
+        }).catch(error => {
+            console.error(`[${new Date().toISOString()}]: Error whilst processing request: ${error}`);
+        });
+
+        return returnedBugs;
     }
 };
