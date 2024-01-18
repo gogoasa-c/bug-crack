@@ -85,16 +85,16 @@ const NavBar = ({ onTabChanged }) => {
             <div>
                 <Flex wrap="wrap" gap="small" className={"navbar-div"}>
                     <Image
+                        className={"navbar-logo"}
                         width={40}
                         alt={"bug_crack_logo"}
                         src="/photo/bug_crack_logo.png"
-                        onClick={() => {
-                        }}
+                        onClick={() => {}}
                     />
                     <Menu
                         className={"navbar-element"}
                         mode="horizontal"
-                        items={menuItems}
+                        items={userId === -1 ? [] : menuItems}
                         selectedKeys={[current]}
                         onClick={menuItemOnClick}
                     />
@@ -118,7 +118,7 @@ const NavBar = ({ onTabChanged }) => {
                 setLoginFormData({
                     ...loginFormData,
                     email: e.target.value,
-                })} onChange1={(e) =>
+                })} onChangePassword={(e) =>
                 setLoginFormData({
                     ...loginFormData,
                     password: e.target.value,
