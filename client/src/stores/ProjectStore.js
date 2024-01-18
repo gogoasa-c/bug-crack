@@ -1,3 +1,5 @@
+import { action, makeObservable, observable } from "mobx";
+
 class ProjectStore {
     projectList = [
         {
@@ -36,6 +38,28 @@ class ProjectStore {
 
     setProjectList = (projectList) => {
         this.projectList = projectList;
+    };
+
+    isModalShown = false;
+
+    selectedProjectForEdit = null;
+
+    constructor() {
+        makeObservable(this, {
+            projectList: observable,
+            isModalShown: observable,
+            selectedProjectForEdit: observable,
+            toggleModalShown: action,
+            updateSelectedProjectForEdit: action,
+        });
+    }
+
+    toggleModalShown = () => {
+        this.isModalShown = !this.isModalShown;
+    };
+
+    updateSelectedProjectForEdit = (project) => {
+        this.selectedProjectForEdit = project;
     };
 }
 
