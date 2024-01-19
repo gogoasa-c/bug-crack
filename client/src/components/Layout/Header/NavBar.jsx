@@ -47,6 +47,8 @@ const NavBar = ({ onTabChanged }) => {
                 setButtonText("Log out");
                 setOpen(false);
                 setIsLoginModalOn(false);
+                setLoginFormData({ email: "", password: "" });
+
                 return;
             }
         });
@@ -57,13 +59,13 @@ const NavBar = ({ onTabChanged }) => {
         setOpen(false);
         setIsLoginModalOn(false);
         setTitle("Enter your e-mail & password: ");
+        setLoginFormData({ email: "", password: "" });
     };
 
     const loginHandler = () => {
         if (userId === -1) {
             setTitle("Enter your e-mail & password: ");
             setIsLoginModalOn(true);
-            //setButtonText("Log out")
             setOpen(true);
         } else {
             setUserId(-1);
@@ -108,9 +110,13 @@ const NavBar = ({ onTabChanged }) => {
                     </Button>
                 </Flex>
             </div>
-            <div style={{ visibility: userId === -1 ? "visible" : "hidden" }}>
-                <LandingPage />
-            </div>
+            {
+                <div
+                    style={{ visibility: userId === -1 ? "visible" : "hidden" }}
+                >
+                    <LandingPage />
+                </div>
+            }
             <Modal
                 title={modalTitle}
                 open={open}
