@@ -2,7 +2,17 @@ import axios from "axios";
 import { observer } from "mobx-react";
 import React, { useState } from "react";
 import "./NavBar.css";
-import { Button, Flex, Layout, Menu, Modal, Form, Input, Image } from "antd";
+import {
+    Button,
+    Flex,
+    Layout,
+    Menu,
+    Modal,
+    Form,
+    Input,
+    Image,
+    message,
+} from "antd";
 import { bugStore } from "../../../stores/BugStore";
 import { userStore } from "../../../stores/UserStore";
 import LandingPage from "../Content/LandingPage";
@@ -28,6 +38,24 @@ const menuItems = [
 }));
 
 const NavBar = observer(({ onTabChanged }) => {
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const error = () => {
+        messageApi.open({
+            duration: 1,
+            type: "error",
+            content: "Invalid credentials!",
+        });
+    };
+
+    const success = () => {
+        messageApi.open({
+            duration: 3,
+            type: "success",
+            content: "Welcome to BugCrack!",
+        });
+    };
+
     const { Header, Content, Footer } = Layout;
 
     const [isLoginModalOn, setIsLoginModalOn] = useState(false);
@@ -57,8 +85,10 @@ const NavBar = observer(({ onTabChanged }) => {
             setOpen(false);
             setIsLoginModalOn(false);
             await bugStore.getBugs(userId);
+            success();
         } catch (e) {
             setTitle("Invalid e-mail or password, please try again: ");
+            error();
         }
     };
 
@@ -90,65 +120,68 @@ const NavBar = observer(({ onTabChanged }) => {
     };
 
     return (
-        <Header className={"navbar"}>
-            <div>
-                <Flex wrap="wrap" gap="small" className={"navbar-div"}>
-                    <Image
-                        className={"navbar-logo"}
-                        width={40}
-                        alt={"bug_crack_logo"}
-                        src="/photo/bug_crack_logo.png"
-                        onClick={() => {}}
-                    />
-                    <Menu
-                        className={"navbar-element"}
-                        mode="horizontal"
-                        items={userStore.userId === -1 ? [] : menuItems}
-                        selectedKeys={[current]}
-                        onClick={menuItemOnClick}
-                    />
-                    <Button
-                        key={0}
-                        type="text"
-                        size={"large"}
-                        onClick={loginHandler}
-                        className={"navbar-button"}
-                        shape={"round"}
-                    >
-                        {buttonText}
-                    </Button>
-                </Flex>
-            </div>
-            {
-                <div
-                    style={{
-                        visibility:
-                            userStore.userId === -1 ? "visible" : "hidden",
-                    }}
-                >
-                    <LandingPage />
+        <>
+            {contextHolder}
+            <Header className={"navbar"}>
+                <div>
+                    <Flex wrap="wrap" gap="small" className={"navbar-div"}>
+                        <Image
+                            className={"navbar-logo"}
+                            width={40}
+                            alt={"bug_crack_logo"}
+                            src="/photo/bug_crack_logo.png"
+                            onClick={() => {}}
+                        />
+                        <Menu
+                            className={"navbar-element"}
+                            mode="horizontal"
+                            items={userStore.userId === -1 ? [] : menuItems}
+                            selectedKeys={[current]}
+                            onClick={menuItemOnClick}
+                        />
+                        <Button
+                            key={0}
+                            type="text"
+                            size={"large"}
+                            onClick={loginHandler}
+                            className={"navbar-button"}
+                            shape={"round"}
+                        >
+                            {buttonText}
+                        </Button>
+                    </Flex>
                 </div>
-            }
-            <LoginModal
-                title={modalTitle}
-                open={open}
-                onOk={handleOk}
-                onCancel={handleCancel}
-                loginFormData={loginFormData}
-                onChange={(e) =>
-                    setLoginFormData({
-                        ...loginFormData,
-                        email: e.target.value,
-                    })
+                {
+                    <div
+                        style={{
+                            visibility:
+                                userStore.userId === -1 ? "visible" : "hidden",
+                        }}
+                    >
+                        <LandingPage />
+                    </div>
                 }
-                onChangePassword={(e) =>
-                    setLoginFormData({
-                        ...loginFormData,
-                        password: e.target.value,
-                    })
-                }
-            />
-        </Header>
+                <LoginModal
+                    title={modalTitle}
+                    open={open}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    loginFormData={loginFormData}
+                    onChange={(e) =>
+                        setLoginFormData({
+                            ...loginFormData,
+                            email: e.target.value,
+                        })
+                    }
+                    onChangePassword={(e) =>
+                        setLoginFormData({
+                            ...loginFormData,
+                            password: e.target.value,
+                        })
+                    }
+                />
+            </Header>
+        </>
     );
 });
 
