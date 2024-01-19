@@ -12,7 +12,7 @@ const ProjectForm = observer(({ project }) => {
         projectStore.toggleModalShown();
 
         const newProject = {
-            id: projectStore.bugList.length + 1,
+            id: projectStore.projectList.length + 1,
             description: form.getFieldValue("Description"),
             repo: form.getFieldValue("Repo"),
         };

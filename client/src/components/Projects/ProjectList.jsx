@@ -47,6 +47,14 @@ const ProjectList = observer(() => {
             pagination={{
                 pageSize: 10,
             }}
+            onRow={(record, rowIndex) => {
+                return {
+                    onClick: (event) => {
+                        projectStore.updateSelectedProjectForEdit(record);
+                        projectStore.toggleModalShown();
+                    },
+                };
+            }}
         />
     );
 });
