@@ -1,19 +1,17 @@
-class UserStore {
-    userList = [
-        {
-            id: 1,
-            email: "valentin@gmail.com",
-            password: "123456"
-        },
-        {
-            id: 2,
-            email: "cristi@gmail.com",
-            password: "AceastaChiarEsteOParola1234"
-        }
-    ];
+import {action, makeObservable, observable} from "mobx";
 
-    setUserList = (userList) => {
-        this.userList = userList;
+class UserStore {
+    userId = -1
+
+    constructor() {
+        makeObservable(this, {
+            userId: observable,
+            setUserId: action
+        })
+    }
+
+    setUserId(userId) {
+        this.userId = userId;
     }
 }
 

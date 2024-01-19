@@ -55,4 +55,32 @@ module.exports = {
 
         return returnedProject;
     },
+
+    getProjectsForUser: async (req, res) => {
+        let returnedProjects = null;
+        const params = req.params;
+
+        if (params.id === undefined) {
+            console.error(
+                `[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`
+            );
+            return returnedProjects;
+        }
+
+        await Project.findAll({
+            where: {
+                userId: params.id
+            }
+        })
+            .then((projects) => {
+                returnedProjects = projects;
+            })
+            .catch((error) => {
+                console.error(
+                    `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
+                );
+            });
+
+        return returnedProjects;
+    }
 };

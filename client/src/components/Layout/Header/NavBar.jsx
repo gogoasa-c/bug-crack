@@ -1,9 +1,13 @@
+import axios from "axios";
+import {observer} from "mobx-react";
 import React, { useState } from "react";
 import "./NavBar.css";
-import { Button, Flex, Layout, Menu, Modal, Form, Input } from "antd";
-import { userStore } from "../../../stores/UserStore";
-import { set } from "mobx";
+import {Button, Flex, Layout, Menu, Modal, Form, Input, Image} from "antd";
+import {bugStore} from "../../../stores/BugStore";
+import {userStore} from "../../../stores/UserStore";
 import LandingPage from "../Content/LandingPage";
+import {LoginModal} from "./Login/LoginModal";
+import Constant from "../../../Constant";
 
 const menuItems = [
     {
@@ -23,7 +27,7 @@ const menuItems = [
     className: "navbar-element",
 }));
 
-const NavBar = ({ onTabChanged }) => {
+const NavBar = observer(({ onTabChanged }) => {
     const { Header, Content, Footer } = Layout;
 
     const [isLoginModalOn, setIsLoginModalOn] = useState(false);
@@ -31,28 +35,29 @@ const NavBar = ({ onTabChanged }) => {
         email: "",
         password: "",
     });
-    const [userId, setUserId] = useState(-1); //-1 <=> invalid (not logged in)
     const [modalTitle, setTitle] = useState("Enter your e-mail & password: ");
     const [open, setOpen] = useState(false);
     const [buttonText, setButtonText] = useState("Log in");
     const [current, setCurrent] = useState("projects");
 
-    const handleOk = () => {
-        userStore.userList.forEach((user) => {
-            if (
-                user.email === loginFormData.email &&
-                user.password === loginFormData.password
-            ) {
-                setUserId(user.id);
-                setButtonText("Log out");
-                setOpen(false);
-                setIsLoginModalOn(false);
-                setLoginFormData({ email: "", password: "" });
-
-                return;
-            }
+    const handleOk = async () => {
+        const response = await axios.post(Constant.LOCALHOST + "/user/login", {
+            email: loginFormData.email,
+            password: loginFormData.password,
         });
-        setTitle("Invalid e-mail or password, please try again: ");
+
+        const userId = response.data["id"];
+
+        if (!userId) {
+            setTitle("Invalid e-mail or password, please try again: ");
+            return;
+        }
+
+        userStore.setUserId(response.data["id"]);
+        setButtonText("Log out");
+        setOpen(false);
+        setIsLoginModalOn(false);
+        await bugStore.getBugs(userId);
     };
 
     const handleCancel = () => {
@@ -63,12 +68,12 @@ const NavBar = ({ onTabChanged }) => {
     };
 
     const loginHandler = () => {
-        if (userId === -1) {
+        if (userStore.userId === -1) {
             setTitle("Enter your e-mail & password: ");
             setIsLoginModalOn(true);
             setOpen(true);
         } else {
-            setUserId(-1);
+            userStore.setUserId(-1);
             setIsLoginModalOn(false);
             setButtonText("Log in");
             setOpen(false);
@@ -76,7 +81,7 @@ const NavBar = ({ onTabChanged }) => {
     };
 
     const menuItemOnClick = (e) => {
-        if (userId !== -1) {
+        if (userStore.userId !== -1) {
             setCurrent(e.key);
             onTabChanged(e.key);
         }
@@ -86,15 +91,17 @@ const NavBar = ({ onTabChanged }) => {
         <Header className={"navbar"}>
             <div>
                 <Flex wrap="wrap" gap="small" className={"navbar-div"}>
-                    <img
+                    <Image
+                        className={"navbar-logo"}
                         width={40}
+                        alt={"bug_crack_logo"}
                         src="/photo/bug_crack_logo.png"
                         onClick={() => {}}
                     />
                     <Menu
                         className={"navbar-element"}
                         mode="horizontal"
-                        items={menuItems}
+                        items={userStore.userId === -1 ? [] : menuItems}
                         selectedKeys={[current]}
                         onClick={menuItemOnClick}
                     />
@@ -112,45 +119,23 @@ const NavBar = ({ onTabChanged }) => {
             </div>
             {
                 <div
-                    style={{ visibility: userId === -1 ? "visible" : "hidden" }}
+                    style={{visibility: userStore.userId === -1 ? "visible" : "hidden"}}
                 >
-                    <LandingPage />
+                    <LandingPage/>
                 </div>
             }
-            <Modal
-                title={modalTitle}
-                open={open}
-                onOk={handleOk}
-                onCancel={handleCancel}
-            >
-                <Form>
-                    <Form.Item label="Email">
-                        <Input
-                            type="email"
-                            value={loginFormData.email}
-                            onChange={(e) =>
-                                setLoginFormData({
-                                    ...loginFormData,
-                                    email: e.target.value,
-                                })
-                            }
-                        />
-                    </Form.Item>
-                    <Form.Item label="Password">
-                        <Input.Password
-                            value={loginFormData.password}
-                            onChange={(e) =>
-                                setLoginFormData({
-                                    ...loginFormData,
-                                    password: e.target.value,
-                                })
-                            }
-                        />
-                    </Form.Item>
-                </Form>
-            </Modal>
+            <LoginModal title={modalTitle} open={open} onOk={handleOk} onCancel={handleCancel}
+                        loginFormData={loginFormData} onChange={(e) =>
+                setLoginFormData({
+                    ...loginFormData,
+                    email: e.target.value,
+                })} onChangePassword={(e) =>
+                setLoginFormData({
+                    ...loginFormData,
+                    password: e.target.value,
+                })}/>
         </Header>
     );
-};
+});
 
 export default NavBar;

@@ -31,5 +31,25 @@ module.exports = {
         }
 
         res.status(STATUS_INTERNAL_SERVER_ERROR).send();
+    },
+
+    getBugsForUser: async (req, res) => {
+        let bugs = await BugService.getBugsForUser(req);
+        if (bugs !== null) {
+            res.status(STATUS_OK).json(bugs);
+            return;
+        }
+
+        res.status(STATUS_INTERNAL_SERVER_ERROR).send();
+    },
+
+    update: async (req, res) => {
+        let error = await BugService.updateBug(req);
+        if (error !== false) {
+            res.status(STATUS_OK).send();
+            return;
+        }
+
+        res.status(STATUS_INTERNAL_SERVER_ERROR).send();
     }
 }

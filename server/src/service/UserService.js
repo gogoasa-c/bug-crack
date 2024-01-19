@@ -75,11 +75,10 @@ module.exports = {
 
     login: async (req, res) => {
         const body = req.body;
-        const user = await User.findOne({ where: { id: body.id } });
+        const user = await User.findOne({ where: { email: body.email } });
         if (user && (await bcrypt.compare(body.password, user.password))) {
-            return true;
-        } else {
-            return false;
+            return user.id;
         }
+        return null;
     },
 };

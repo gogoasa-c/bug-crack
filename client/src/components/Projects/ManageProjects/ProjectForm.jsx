@@ -1,4 +1,6 @@
 import { Button, Form, Input, Select, Space } from "antd";
+import axios from "axios";
+import Constant from "../../../Constant";
 import { projectStore } from "../../../stores/ProjectStore";
 import { observer } from "mobx-react";
 
@@ -12,14 +14,17 @@ const ProjectForm = observer(({ project }) => {
         projectStore.toggleModalShown();
 
         const newProject = {
-            id: projectStore.projectList.length + 1,
             description: form.getFieldValue("Description"),
             repo: form.getFieldValue("Repo"),
         };
 
         if (operation === "Edit") {
+
+
             // update project
         } else {
+
+            await axios.post(Constant.LOCALHOST + "/project", newProject);
             // add project
         }
     };

@@ -1,4 +1,8 @@
+import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
+import projectList from "../components/Projects/ProjectList";
+import {userStore} from "./UserStore";
+import Constant from "../Constant";
 
 class ProjectStore {
     projectList = [
@@ -36,6 +40,8 @@ class ProjectStore {
         },
     ];
 
+    // projectList = [];
+
     setProjectList = (projectList) => {
         this.projectList = projectList;
     };
@@ -45,6 +51,7 @@ class ProjectStore {
     selectedProjectForEdit = null;
 
     constructor() {
+        this.getProjectsForUser();
         makeObservable(this, {
             projectList: observable,
             isModalShown: observable,
@@ -61,6 +68,18 @@ class ProjectStore {
     updateSelectedProjectForEdit = (project) => {
         this.selectedProjectForEdit = project;
     };
+
+    getProjectsForUser = async () => {
+        await axios.get(Constant.LOCALHOST + `/project/user/${userStore.userId}`)
+            .then((response) => {
+                this.setProjectList(response.data);
+            })
+            .catch((error) => {
+                console.error(
+                    `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
+                );
+            });
+    }
 }
 
 export const projectStore = new ProjectStore();

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import "../Projects/ProjectList.css";
-import { Layout, Space, Row, Col, Divider, Table } from "antd";
+import {Layout, Space, Row, Col, Divider, Table, Button} from "antd";
 import { CheckCircleFilled } from "@ant-design/icons";
+import {userStore} from "../../stores/UserStore";
 import Dot from "../Common/Dot";
 import { observer } from "mobx-react";
 import { projectStore } from "../../stores/ProjectStore";
@@ -41,6 +42,11 @@ const getColumns = (column) => {
 };
 
 const ProjectList = observer(() => {
+    // projectStore.getProjectsForUser();
+    if (userStore.userId === -1) {
+        return <></>;
+    }
+
     return (
         <>
             <ProjectModal title="Edit Bug" />
@@ -52,13 +58,24 @@ const ProjectList = observer(() => {
                 }}
                 onRow={(record, rowIndex) => {
                     return {
-                        onClick: (event) => {
+                        onClick: () => {
                             projectStore.updateSelectedProjectForEdit(record);
                             projectStore.toggleModalShown();
                         },
                     };
                 }}
             />
+            <Button
+                type="primary"
+                style={{margin: "10px", background: "#203464"}}
+                shape={"round"}
+                onClick={() => {
+                    projectStore.updateSelectedProjectForEdit(null);
+                    projectStore.toggleModalShown();
+                }}
+            >
+                Add project
+            </Button>
         </>
     );
 });
