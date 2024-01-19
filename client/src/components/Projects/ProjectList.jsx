@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import "../Projects/ProjectList.css";
-import { Layout, Space, Row, Col, Divider, Table, Button } from "antd";
+import { Layout, Space, Row, Col, Divider, Table } from "antd";
 import { CheckCircleFilled } from "@ant-design/icons";
 import Dot from "../Common/Dot";
 import { observer } from "mobx-react";
@@ -41,21 +41,9 @@ const getColumns = (column) => {
 };
 
 const ProjectList = observer(() => {
-    const handleAddProject = () => {
-        projectStore.updateSelectedProjectForEdit(null); // set selected project to null
-        projectStore.toggleModalShown(); // open the modal
-    };
-
     return (
         <>
             <ProjectModal title="Edit Bug" />
-            <Button
-                type="primary"
-                onClick={handleAddProject}
-                style={{ float: "right" }}
-            >
-                {"Add Project"}
-            </Button>
             <Table
                 columns={headers.map((col) => getColumns(col))}
                 dataSource={projectStore.projectList}

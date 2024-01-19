@@ -4,6 +4,7 @@ import { projectStore } from "../../../stores/ProjectStore";
 import ProjectForm from "./ProjectForm";
 
 const ProjectModal = observer(({ title }) => {
+    console.log("Rendering Modal"); // add this line
     return (
         <Modal
             open={projectStore.isModalShown}
