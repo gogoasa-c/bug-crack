@@ -1,8 +1,10 @@
 import axios from "axios";
+import {observer} from "mobx-react";
 import React, { useState } from "react";
 import "./NavBar.css";
 import {Button, Flex, Layout, Menu, Modal, Form, Input, Image} from "antd";
 import {bugStore} from "../../../stores/BugStore";
+import {userStore} from "../../../stores/UserStore";
 import LandingPage from "../Content/LandingPage";
 import {LoginModal} from "./Login/LoginModal";
 import Constant from "../../../Constant";
@@ -25,7 +27,7 @@ const menuItems = [
     className: "navbar-element",
 }));
 
-const NavBar = ({ onTabChanged }) => {
+const NavBar = observer(({ onTabChanged }) => {
     const { Header, Content, Footer } = Layout;
 
     const [isLoginModalOn, setIsLoginModalOn] = useState(false);
@@ -33,7 +35,6 @@ const NavBar = ({ onTabChanged }) => {
         email: "",
         password: "",
     });
-    const [userId, setUserId] = useState(-1); //-1 <=> invalid (not logged in)
     const [modalTitle, setTitle] = useState("Enter your e-mail & password: ");
     const [open, setOpen] = useState(false);
     const [buttonText, setButtonText] = useState("Log in");
@@ -52,7 +53,7 @@ const NavBar = ({ onTabChanged }) => {
             return;
         }
 
-        setUserId(response.data["id"]);
+        userStore.setUserId(response.data["id"]);
         setButtonText("Log out");
         setOpen(false);
         setIsLoginModalOn(false);
@@ -67,12 +68,12 @@ const NavBar = ({ onTabChanged }) => {
     };
 
     const loginHandler = () => {
-        if (userId === -1) {
+        if (userStore.userId === -1) {
             setTitle("Enter your e-mail & password: ");
             setIsLoginModalOn(true);
             setOpen(true);
         } else {
-            setUserId(-1);
+            userStore.setUserId(-1);
             setIsLoginModalOn(false);
             setButtonText("Log in");
             setOpen(false);
@@ -80,7 +81,7 @@ const NavBar = ({ onTabChanged }) => {
     };
 
     const menuItemOnClick = (e) => {
-        if (userId !== -1) {
+        if (userStore.userId !== -1) {
             setCurrent(e.key);
             onTabChanged(e.key);
         }
@@ -100,7 +101,7 @@ const NavBar = ({ onTabChanged }) => {
                     <Menu
                         className={"navbar-element"}
                         mode="horizontal"
-                        items={userId === -1 ? [] : menuItems}
+                        items={userStore.userId === -1 ? [] : menuItems}
                         selectedKeys={[current]}
                         onClick={menuItemOnClick}
                     />
@@ -118,7 +119,7 @@ const NavBar = ({ onTabChanged }) => {
             </div>
             {
                 <div
-                    style={{visibility: userId === -1 ? "visible" : "hidden"}}
+                    style={{visibility: userStore.userId === -1 ? "visible" : "hidden"}}
                 >
                     <LandingPage/>
                 </div>
@@ -135,6 +136,6 @@ const NavBar = ({ onTabChanged }) => {
                 })}/>
         </Header>
     );
-};
+});
 
 export default NavBar;

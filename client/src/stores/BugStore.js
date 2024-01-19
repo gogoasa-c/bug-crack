@@ -210,6 +210,7 @@ class BugStore {
     };
 
     updateSelectedBugForEdit = (bug) => {
+        console.log(bug.id);
         this.selectedBugForEdit = bug;
     };
 

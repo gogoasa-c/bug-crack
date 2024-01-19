@@ -149,4 +149,94 @@ module.exports = {
 
         return returnedBugs;
     },
+
+    updateBug: async (request) => {
+        const body = request.body;
+        const params = request.params;
+
+        if (
+            body.description === undefined ||
+            body.commitLink === undefined ||
+            body.status === undefined
+        ) {
+            console.log(body)
+            console.error(
+                `[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`
+            );
+            return false;
+        }
+
+        if (
+            body.severity !== "Harmless" &&
+            body.severity !== "Low" &&
+            body.severity !== "Medium" &&
+            body.severity !== "High" &&
+            body.severity !== "Critical"
+        ) {
+            console.error(
+                `[${new Date().toISOString()}]: Error whilst processing request: Invalid severity`
+            );
+            return false;
+        }
+
+        if (
+            body.status !== "New" &&
+            body.status !== "In Progress" &&
+            body.status !== "Fixed" &&
+            body.status !== "Closed"
+        ) {
+            console.error(
+                `[${new Date().toISOString()}]: Error whilst processing request: Invalid status`
+            );
+            return false;
+        }
+
+        try {
+            const updatedBug = await Bug.update(
+                {
+                    severity: body.severity,
+                    description: body.description,
+                    commitLink: body.commitLink,
+                    status: body.status,
+                },
+                {
+                    where: {
+                        id: params.id,
+                    },
+                }
+            );
+
+            if (updatedBug[0] === 0) {
+                console.error(
+                    `[${new Date().toISOString()}]: Error whilst processing request: Bug not found`
+                );
+                return false;
+            }
+
+            return true;
+        } catch (error) {
+            console.error(
+                `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
+            );
+            return false;
+        }
+    },
+
+        
+
+        //  await Bug.update(
+        //     {
+        //         severity: body.severity,
+        //         description: body.description,
+        //         commitLink: body.commitLink,
+        //         status: body.status,
+        //     },
+        //     {
+        //         where: {
+        //             id: params.id,
+        //         },
+        //     }
+        // );
+
+
 };

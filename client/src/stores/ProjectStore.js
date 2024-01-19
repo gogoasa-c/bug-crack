@@ -1,4 +1,7 @@
 import { action, makeObservable, observable } from "mobx";
+import projectList from "../components/Projects/ProjectList";
+import {userStore} from "./UserStore";
+import Constant from "../Constant";
 
 class ProjectStore {
     projectList = [
@@ -36,6 +39,8 @@ class ProjectStore {
         },
     ];
 
+    // projectList = [];
+
     setProjectList = (projectList) => {
         this.projectList = projectList;
     };
@@ -61,6 +66,18 @@ class ProjectStore {
     updateSelectedProjectForEdit = (project) => {
         this.selectedProjectForEdit = project;
     };
+
+    getProjectsForUser = async () => {
+        await fetch(Constant.LOCALHOST + `/project/user/${userStore.userId}`)
+            .then((response) => {
+                this.projectList = response.data;
+            })
+            .catch((error) => {
+                console.error(
+                    `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
+                );
+            });
+    }
 }
 
 export const projectStore = new ProjectStore();

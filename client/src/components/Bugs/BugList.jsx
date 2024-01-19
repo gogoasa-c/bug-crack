@@ -196,7 +196,7 @@ const bugArray1 = [
     },
 ];
 
-const headers = ["Project", "Description", "Severity", "Status", "Assigned To"];
+const headers = ["Project", "Description", "Severity", "Status", "Commit Link"];
 
 const getHeaders = (header) => {
     if (header === "Description") {
@@ -213,10 +213,10 @@ const getColumns = (column) => {
             width: 300,
         };
     }
-    if (column === "Assigned To") {
+    if (column === "Commit Link") {
         return {
             title: column,
-            dataIndex: "assignedTo",
+            dataIndex: "commitLink",
             width: 300,
         };
     }

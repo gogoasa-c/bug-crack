@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../Projects/ProjectList.css";
 import { Layout, Space, Row, Col, Divider, Table } from "antd";
 import { CheckCircleFilled } from "@ant-design/icons";
+import {userStore} from "../../stores/UserStore";
 import Dot from "../Common/Dot";
 import { observer } from "mobx-react";
 import { projectStore } from "../../stores/ProjectStore";
@@ -41,6 +42,11 @@ const getColumns = (column) => {
 };
 
 const ProjectList = observer(() => {
+    // projectStore.getProjectsForUser();
+    if (userStore.userId === -1) {
+        return <></>;
+    }
+
     return (
         <>
             <ProjectModal title="Edit Bug" />

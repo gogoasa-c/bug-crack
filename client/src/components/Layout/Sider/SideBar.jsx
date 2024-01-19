@@ -48,6 +48,7 @@ const SideBar = observer(({ selectedTab }) => {
             <Button
                 type="primary"
                 style={{ margin: "10px", background: "#203464" }}
+                shape={"round"}
                 onClick={() => {}}
             >
                 Add bug

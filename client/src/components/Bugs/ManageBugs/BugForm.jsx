@@ -1,6 +1,9 @@
 import { Button, Form, Input, Select, Space } from "antd";
+import axios from "axios";
+import Constant from "../../../Constant";
 import { bugStore } from "../../../stores/BugStore";
 import { observer } from "mobx-react";
+import {userStore} from "../../../stores/UserStore";
 
 const BugForm = observer(({ bug }) => {
     const operation = bug ? "Edit" : "Add";
@@ -12,16 +15,19 @@ const BugForm = observer(({ bug }) => {
         bugStore.toggleModalShown();
 
         const newBug = {
-            id: bugStore.bugList.length + 1,
-            project: form.getFieldValue("Project"),
             description: form.getFieldValue("Description"),
             severity: form.getFieldValue("Severity"),
             status: form.getFieldValue("Status"),
-            assignedTo: form.getFieldValue("AssignedTo"),
             commitLink: form.getFieldValue("CommitLink"),
         };
 
         if (operation === "Edit") {
+            axios.put(Constant.LOCALHOST + `/bug/${bugStore.selectedBugForEdit.id}`, newBug)
+                .then((response) => {
+                    bugStore.resetFilteredBugs();
+                    bugStore.getBugs(userStore.userId);
+                });
+
             // update bug
         } else {
             // add bug
@@ -45,7 +51,7 @@ const BugForm = observer(({ bug }) => {
                 Description: bug ? bug.description : "",
                 Severity: bug ? bug.severity : "",
                 Status: bug ? bug.status : "",
-                AssignedTo: bug ? bug.assignedTo : "",
+                CommitLink: bug ? bug.commitLink : "",
             }}
         >
             <Form.Item label={"Project"} name={"Project"}>
@@ -72,9 +78,6 @@ const BugForm = observer(({ bug }) => {
                     <Select.Option value={"Fixed"}>Fixed</Select.Option>
                     <Select.Option value={"Closed"}>Closed</Select.Option>
                 </Select>
-            </Form.Item>
-            <Form.Item label={"Assigned To"} name={"AssignedTo"}>
-                <Input />
             </Form.Item>
             <Form.Item label={"Commit Link"} name={"CommitLink"}>
                 <Input />
