@@ -1,3 +1,4 @@
+import axios from "axios";
 import { action, makeObservable, observable } from "mobx";
 import projectList from "../components/Projects/ProjectList";
 import {userStore} from "./UserStore";
@@ -50,6 +51,7 @@ class ProjectStore {
     selectedProjectForEdit = null;
 
     constructor() {
+        this.getProjectsForUser();
         makeObservable(this, {
             projectList: observable,
             isModalShown: observable,
@@ -68,9 +70,9 @@ class ProjectStore {
     };
 
     getProjectsForUser = async () => {
-        await fetch(Constant.LOCALHOST + `/project/user/${userStore.userId}`)
+        await axios.get(Constant.LOCALHOST + `/project/user/${userStore.userId}`)
             .then((response) => {
-                this.projectList = response.data;
+                this.setProjectList(response.data);
             })
             .catch((error) => {
                 console.error(
