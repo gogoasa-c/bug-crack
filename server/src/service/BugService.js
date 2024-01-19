@@ -14,8 +14,10 @@ module.exports = {
             body.commitLink === undefined ||
             body.projectId === undefined ||
             body.userId === undefined ||
-            body.status === undefined
+            body.status === undefined ||
+            body.severity === undefined
         ) {
+            console.log(body)
             console.error(
                 `[${new Date().toISOString()}]: Error whilst processing request: Missing parameters`
             );

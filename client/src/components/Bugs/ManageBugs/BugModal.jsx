@@ -7,7 +7,6 @@ const BugModal = observer(({ title }) => {
     return (
         <Modal
             open={bugStore.isModalShown}
-            title={title}
             footer={null}
             onCancel={null}
             closable={false}

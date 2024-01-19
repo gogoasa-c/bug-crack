@@ -11,11 +11,11 @@ const BugForm = observer(({ bug }) => {
     const [form] = Form.useForm();
 
     const handleFormFinish = async () => {
-        form.resetFields();
         bugStore.toggleModalShown();
 
         const newBug = {
             description: form.getFieldValue("Description"),
+            projectId: form.getFieldValue("Project"),
             severity: form.getFieldValue("Severity"),
             status: form.getFieldValue("Status"),
             commitLink: form.getFieldValue("CommitLink"),
@@ -31,7 +31,13 @@ const BugForm = observer(({ bug }) => {
             // update bug
         } else {
             // add bug
+            await axios.post(Constant.LOCALHOST + `/bug/`, {
+                ...newBug,
+                userId: userStore.userId,
+            })
         }
+        form.resetFields();
+        await bugStore.getBugs(userStore.userId);
     };
 
     const handleCancel = () => {

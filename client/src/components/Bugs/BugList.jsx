@@ -239,7 +239,7 @@ const BugList = observer(() => {
                 }}
                 onRow={(record, rowIndex) => {
                     return {
-                        onClick: (event) => {
+                        onClick: () => {
                             bugStore.updateSelectedBugForEdit(record);
                             bugStore.toggleModalShown();
                         },
