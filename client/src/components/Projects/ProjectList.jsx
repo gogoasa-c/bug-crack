@@ -5,6 +5,7 @@ import { CheckCircleFilled } from "@ant-design/icons";
 import Dot from "../Common/Dot";
 import { observer } from "mobx-react";
 import { projectStore } from "../../stores/ProjectStore";
+import ProjectModal from "./ManageProjects/ProjectModal";
 
 const { Header, Footer, Sider, Content } = Layout;
 
@@ -41,21 +42,24 @@ const getColumns = (column) => {
 
 const ProjectList = observer(() => {
     return (
-        <Table
-            columns={headers.map((col) => getColumns(col))}
-            dataSource={projectStore.projectList}
-            pagination={{
-                pageSize: 10,
-            }}
-            onRow={(record, rowIndex) => {
-                return {
-                    onClick: (event) => {
-                        projectStore.updateSelectedProjectForEdit(record);
-                        projectStore.toggleModalShown();
-                    },
-                };
-            }}
-        />
+        <>
+            <ProjectModal title="Edit Bug" />
+            <Table
+                columns={headers.map((col) => getColumns(col))}
+                dataSource={projectStore.projectList}
+                pagination={{
+                    pageSize: 10,
+                }}
+                onRow={(record, rowIndex) => {
+                    return {
+                        onClick: (event) => {
+                            projectStore.updateSelectedProjectForEdit(record);
+                            projectStore.toggleModalShown();
+                        },
+                    };
+                }}
+            />
+        </>
     );
 });
 
