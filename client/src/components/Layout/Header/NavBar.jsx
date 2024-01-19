@@ -41,23 +41,28 @@ const NavBar = observer(({ onTabChanged }) => {
     const [current, setCurrent] = useState("projects");
 
     const handleOk = async () => {
-        const response = await axios.post(Constant.LOCALHOST + "/user/login", {
-            email: loginFormData.email,
-            password: loginFormData.password,
-        });
+        try {
+            const response = await axios.post(Constant.LOCALHOST + "/user/login", {
+                email: loginFormData.email,
+                password: loginFormData.password,
+            });
 
-        const userId = response.data["id"];
+            const userId = response.data["id"];
 
-        if (!userId) {
+            if (!userId) {
+                setTitle("Invalid e-mail or password, please try again: ");
+                return;
+            }
+
+            userStore.setUserId(response.data["id"]);
+            setButtonText("Log out");
+            setOpen(false);
+            setIsLoginModalOn(false);
+            setLoginFormData({ email: "", password: "" });
+            await bugStore.getBugs(userId);
+        } catch (e) {
             setTitle("Invalid e-mail or password, please try again: ");
-            return;
         }
-
-        userStore.setUserId(response.data["id"]);
-        setButtonText("Log out");
-        setOpen(false);
-        setIsLoginModalOn(false);
-        await bugStore.getBugs(userId);
     };
 
     const handleCancel = () => {
