@@ -5,6 +5,7 @@ import "./SideBar.css";
 import {observer} from "mobx-react";
 import {bugStore} from "../../../stores/BugStore";
 import {projectStore} from "../../../stores/ProjectStore";
+import {userStore} from "../../../stores/UserStore";
 import BugModal from "../../Bugs/ManageBugs/BugModal";
 
 const {Header, Content, Footer, Sider} = Layout;
@@ -27,7 +28,7 @@ const SideBar = observer(({selectedTab}) => {
         bugStore.filterBugsByProjectId(item.key);
     };
 
-    if (selectedTab !== constant.BUGS_TAB) {
+    if (selectedTab !== constant.BUGS_TAB || userStore.userId === -1) {
         return;
     }
 
