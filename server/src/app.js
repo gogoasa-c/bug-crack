@@ -26,6 +26,15 @@ Project.belongsToMany(User, {
 Team.belongsToMany(User, { through: "Team_Users", foreignKey: "teamId" });
 User.belongsToMany(Team, { through: "Team_Users", foreignKey: "userId" });
 
+Project.belongsToMany(User, {
+    through: "Project_Users",
+    foreignKey: "projectId",
+});
+User.belongsToMany(Project, {
+    through: "Project_Users",
+    foreignKey: "userId",
+});
+
 Bug.belongsTo(User, { foreignKey: "userId" });
 User.hasMany(Bug, { foreignKey: "userId" });
 
