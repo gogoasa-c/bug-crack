@@ -5,4 +5,10 @@ p, a, footer, h2 {
 h1 {
     color: black;
 }
-  
+
+footer {
+    position: fixed;
+    bottom: 0;
+    align-self: flex-end;
+    display: flex;
+}
