@@ -44,7 +44,7 @@ class BugStore {
                 "We’re not sure whether to call this a feature or not.",
             severity: "Critical",
             status: "Closed",
-            assignedTo: "Andrei Cheorche",
+            assignedTo: "Andrei Cheorche"
         },
         {
             id: 0,
