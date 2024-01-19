@@ -3,7 +3,7 @@ import { observer } from "mobx-react";
 import { projectStore } from "../../../stores/ProjectStore";
 import ProjectForm from "./ProjectForm";
 
-const BugModal = observer(({ title }) => {
+const ProjectModal = observer(({ title }) => {
     console.log("Rendering Modal"); // add this line
     return (
         <Modal
@@ -13,9 +13,9 @@ const BugModal = observer(({ title }) => {
             onCancel={null}
             closable={false}
         >
-            <ProjectForm bug={projectStore.selectedBugForEdit} />
+            <ProjectForm project={projectStore.selectedProjectForEdit} />
         </Modal>
     );
 });
 
-export default BugModal;
+export default ProjectModal;
