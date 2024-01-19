@@ -1,12 +1,12 @@
 import axios from "axios";
-import {observer} from "mobx-react";
+import { observer } from "mobx-react";
 import React, { useState } from "react";
 import "./NavBar.css";
-import {Button, Flex, Layout, Menu, Modal, Form, Input, Image} from "antd";
-import {bugStore} from "../../../stores/BugStore";
-import {userStore} from "../../../stores/UserStore";
+import { Button, Flex, Layout, Menu, Modal, Form, Input, Image } from "antd";
+import { bugStore } from "../../../stores/BugStore";
+import { userStore } from "../../../stores/UserStore";
 import LandingPage from "../Content/LandingPage";
-import {LoginModal} from "./Login/LoginModal";
+import { LoginModal } from "./Login/LoginModal";
 import Constant from "../../../Constant";
 
 const menuItems = [
@@ -41,23 +41,25 @@ const NavBar = observer(({ onTabChanged }) => {
     const [current, setCurrent] = useState("projects");
 
     const handleOk = async () => {
-        const response = await axios.post(Constant.LOCALHOST + "/user/login", {
-            email: loginFormData.email,
-            password: loginFormData.password,
-        });
+        try {
+            const response = await axios.post(
+                Constant.LOCALHOST + "/user/login",
+                {
+                    email: loginFormData.email,
+                    password: loginFormData.password,
+                }
+            );
 
-        const userId = response.data["id"];
+            const userId = response.data["id"];
 
-        if (!userId) {
+            userStore.setUserId(response.data["id"]);
+            setButtonText("Log out");
+            setOpen(false);
+            setIsLoginModalOn(false);
+            await bugStore.getBugs(userId);
+        } catch (e) {
             setTitle("Invalid e-mail or password, please try again: ");
-            return;
         }
-
-        userStore.setUserId(response.data["id"]);
-        setButtonText("Log out");
-        setOpen(false);
-        setIsLoginModalOn(false);
-        await bugStore.getBugs(userId);
     };
 
     const handleCancel = () => {
@@ -119,21 +121,33 @@ const NavBar = observer(({ onTabChanged }) => {
             </div>
             {
                 <div
-                    style={{visibility: userStore.userId === -1 ? "visible" : "hidden"}}
+                    style={{
+                        visibility:
+                            userStore.userId === -1 ? "visible" : "hidden",
+                    }}
                 >
-                    <LandingPage/>
+                    <LandingPage />
                 </div>
             }
-            <LoginModal title={modalTitle} open={open} onOk={handleOk} onCancel={handleCancel}
-                        loginFormData={loginFormData} onChange={(e) =>
-                setLoginFormData({
-                    ...loginFormData,
-                    email: e.target.value,
-                })} onChangePassword={(e) =>
-                setLoginFormData({
-                    ...loginFormData,
-                    password: e.target.value,
-                })}/>
+            <LoginModal
+                title={modalTitle}
+                open={open}
+                onOk={handleOk}
+                onCancel={handleCancel}
+                loginFormData={loginFormData}
+                onChange={(e) =>
+                    setLoginFormData({
+                        ...loginFormData,
+                        email: e.target.value,
+                    })
+                }
+                onChangePassword={(e) =>
+                    setLoginFormData({
+                        ...loginFormData,
+                        password: e.target.value,
+                    })
+                }
+            />
         </Header>
     );
 });
