@@ -1,12 +1,22 @@
 import axios from "axios";
-import {observer} from "mobx-react";
+import { observer } from "mobx-react";
 import React, { useState } from "react";
 import "./NavBar.css";
-import {Button, Flex, Layout, Menu, Modal, Form, Input, Image} from "antd";
-import {bugStore} from "../../../stores/BugStore";
-import {userStore} from "../../../stores/UserStore";
+import {
+    Button,
+    Flex,
+    Layout,
+    Menu,
+    Modal,
+    Form,
+    Input,
+    Image,
+    message,
+} from "antd";
+import { bugStore } from "../../../stores/BugStore";
+import { userStore } from "../../../stores/UserStore";
 import LandingPage from "../Content/LandingPage";
-import {LoginModal} from "./Login/LoginModal";
+import { LoginModal } from "./Login/LoginModal";
 import Constant from "../../../Constant";
 
 const menuItems = [
@@ -28,6 +38,24 @@ const menuItems = [
 }));
 
 const NavBar = observer(({ onTabChanged }) => {
+    const [messageApi, contextHolder] = message.useMessage();
+
+    const error = () => {
+        messageApi.open({
+            duration: 1,
+            type: "error",
+            content: "Invalid credentials!",
+        });
+    };
+
+    const success = () => {
+        messageApi.open({
+            duration: 3,
+            type: "success",
+            content: "Welcome to BugCrack!",
+        });
+    };
+
     const { Header, Content, Footer } = Layout;
 
     const [isLoginModalOn, setIsLoginModalOn] = useState(false);
@@ -41,23 +69,27 @@ const NavBar = observer(({ onTabChanged }) => {
     const [current, setCurrent] = useState("projects");
 
     const handleOk = async () => {
-        const response = await axios.post(Constant.LOCALHOST + "/user/login", {
-            email: loginFormData.email,
-            password: loginFormData.password,
-        });
+        try {
+            const response = await axios.post(
+                Constant.LOCALHOST + "/user/login",
+                {
+                    email: loginFormData.email,
+                    password: loginFormData.password,
+                }
+            );
 
-        const userId = response.data["id"];
+            const userId = response.data["id"];
 
-        if (!userId) {
+            userStore.setUserId(response.data["id"]);
+            setButtonText("Log out");
+            setOpen(false);
+            setIsLoginModalOn(false);
+            await bugStore.getBugs(userId);
+            success();
+        } catch (e) {
             setTitle("Invalid e-mail or password, please try again: ");
-            return;
+            error();
         }
-
-        userStore.setUserId(response.data["id"]);
-        setButtonText("Log out");
-        setOpen(false);
-        setIsLoginModalOn(false);
-        await bugStore.getBugs(userId);
     };
 
     const handleCancel = () => {
@@ -88,53 +120,68 @@ const NavBar = observer(({ onTabChanged }) => {
     };
 
     return (
-        <Header className={"navbar"}>
-            <div>
-                <Flex wrap="wrap" gap="small" className={"navbar-div"}>
-                    <Image
-                        className={"navbar-logo"}
-                        width={40}
-                        alt={"bug_crack_logo"}
-                        src="/photo/bug_crack_logo.png"
-                        onClick={() => {}}
-                    />
-                    <Menu
-                        className={"navbar-element"}
-                        mode="horizontal"
-                        items={userStore.userId === -1 ? [] : menuItems}
-                        selectedKeys={[current]}
-                        onClick={menuItemOnClick}
-                    />
-                    <Button
-                        key={0}
-                        type="text"
-                        size={"large"}
-                        onClick={loginHandler}
-                        className={"navbar-button"}
-                        shape={"round"}
-                    >
-                        {buttonText}
-                    </Button>
-                </Flex>
-            </div>
-            {
-                <div
-                    style={{visibility: userStore.userId === -1 ? "visible" : "hidden"}}
-                >
-                    <LandingPage/>
+        <>
+            {contextHolder}
+            <Header className={"navbar"}>
+                <div>
+                    <Flex wrap="wrap" gap="small" className={"navbar-div"}>
+                        <Image
+                            className={"navbar-logo"}
+                            width={40}
+                            alt={"bug_crack_logo"}
+                            src="/photo/bug_crack_logo.png"
+                            onClick={() => {}}
+                        />
+                        <Menu
+                            className={"navbar-element"}
+                            mode="horizontal"
+                            items={userStore.userId === -1 ? [] : menuItems}
+                            selectedKeys={[current]}
+                            onClick={menuItemOnClick}
+                        />
+                        <Button
+                            key={0}
+                            type="text"
+                            size={"large"}
+                            onClick={loginHandler}
+                            className={"navbar-button"}
+                            shape={"round"}
+                        >
+                            {buttonText}
+                        </Button>
+                    </Flex>
                 </div>
-            }
-            <LoginModal title={modalTitle} open={open} onOk={handleOk} onCancel={handleCancel}
-                        loginFormData={loginFormData} onChange={(e) =>
-                setLoginFormData({
-                    ...loginFormData,
-                    email: e.target.value,
-                })} onChangePassword={(e) =>
-                setLoginFormData({
-                    ...loginFormData,
-                    password: e.target.value,
-                })}/>
-        </Header>
+                {
+                    <div
+                        style={{
+                            visibility:
+                                userStore.userId === -1 ? "visible" : "hidden",
+                        }}
+                    >
+                        <LandingPage />
+                    </div>
+                }
+                <LoginModal
+                    title={modalTitle}
+                    open={open}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                    loginFormData={loginFormData}
+                    onChange={(e) =>
+                        setLoginFormData({
+                            ...loginFormData,
+                            email: e.target.value,
+                        })
+                    }
+                    onChangePassword={(e) =>
+                        setLoginFormData({
+                            ...loginFormData,
+                            password: e.target.value,
+                        })
+                    }
+                />
+            </Header>
+        </>
     );
 });
 
