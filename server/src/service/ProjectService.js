@@ -30,6 +30,8 @@ module.exports = {
                     `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
                 );
             });
+
+        return returnedProject;
     },
 
     getProject: async (req, res) => {

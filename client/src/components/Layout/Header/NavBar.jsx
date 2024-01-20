@@ -70,20 +70,23 @@ const NavBar = observer(({ onTabChanged }) => {
 
     const handleOk = async () => {
         try {
-            const response = await axios.post(
-                Constant.LOCALHOST + "/user/login",
-                {
-                    email: loginFormData.email,
-                    password: loginFormData.password,
-                }
-            );
+            const response = await axios.post(Constant.LOCALHOST + "/user/login", {
+                email: loginFormData.email,
+                password: loginFormData.password,
+            });
 
             const userId = response.data["id"];
 
+            if (!userId) {
+                setTitle("Invalid e-mail or password, please try again: ");
+                return;
+            }
+          
             userStore.setUserId(response.data["id"]);
             setButtonText("Log out");
             setOpen(false);
             setIsLoginModalOn(false);
+            setLoginFormData({ email: "", password: "" });
             await bugStore.getBugs(userId);
             success();
         } catch (e) {

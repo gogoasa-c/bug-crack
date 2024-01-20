@@ -29,6 +29,8 @@ module.exports = {
                     `[${new Date().toISOString()}]: Error whilst processing request: ${error}`
                 );
             });
+
+        return returnedTeam;
     },
 
     getTeam: async (req, res) => {
